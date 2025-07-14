@@ -1,16 +1,3 @@
-# beenai_sense
+# Beenai Sense
 
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Beenai Sense is a mobile application developed to support visually impaired individuals, making their everyday life easier and more independent. Built with accessibility in mind, the app uses voice commands and simple navigation to help users carry out essential tasks like identifying objects, reading printed text, and interacting through a built-in assistant. With support for multiple languages and a friendly, easy-to-use design, Beenai Sense aims to be a reliable companion for the blind and visually impaired community.
