@@ -11,33 +11,41 @@ class ObjectdetectionController extends GetxController {
   var detections = <Map<String, dynamic>>[].obs;
   final tts = FlutterTts();
   var cameraController = Rx<CameraController?>(null);
+  var isCameraReady = false.obs;
   Timer? frameTimer;
   String lastSpoken = '';
   int lastSpokenTime = 0;
 
   Future<void> initializeCamera() async {
     try {
+      isCameraReady.value = false;
       final cameras = await availableCameras();
       final camera = cameras.firstWhere(
         (cam) => cam.lensDirection == CameraLensDirection.back,
         orElse: () => cameras.first,
       );
 
-      cameraController.value = CameraController(camera, ResolutionPreset.medium);
+      cameraController.value = CameraController(camera, ResolutionPreset.high);
       await cameraController.value!.initialize();
       cameraController.value!.startImageStream((image) {});
-
-      frameTimer = Timer.periodic(const Duration(seconds: 2), (_) => captureAndDetect());
+      isCameraReady.value = true;
+      frameTimer = Timer.periodic(
+        const Duration(seconds: 2),
+        (_) => captureAndDetect(),
+      );
     } catch (e) {
       Get.snackbar("Camera Error", "Failed to initialize camera");
     }
   }
 
-  void disposeCamera() {
+  Future<void> disposeCamera() async {
     frameTimer?.cancel();
     frameTimer = null;
     cameraController.value?.dispose();
     cameraController.value = null;
+    detections.value = [];
+    await tts.stop();
+    isCameraReady.value = false;
   }
 
   Future<void> captureAndDetect() async {
@@ -57,13 +65,23 @@ class ObjectdetectionController extends GetxController {
       final data = json.decode(responseData.body);
 
       if (data['success'] == true) {
-        detections.value = List<Map<String, dynamic>>.from(data['detections']);
+        final allDetections = List<Map<String, dynamic>>.from(
+          data['detections'],
+        );
+        detections.value = allDetections
+            .where((d) => d['confidence'] >= 0.70)
+            .toList();
+
         if (detections.isNotEmpty) {
           final now = DateTime.now().millisecondsSinceEpoch;
-          final firstLabel = detections[0]['label'];
-          if (firstLabel != lastSpoken || now - lastSpokenTime > 4000) {
-            await tts.speak("I see ${firstLabel}");
-            lastSpoken = firstLabel;
+          final first = detections[0];
+          final label = first['label'];
+          final confidence = first['confidence'];
+
+          if (confidence >= 0.70 &&
+              (label != lastSpoken || now - lastSpokenTime > 4000)) {
+            await tts.speak("I see $label");
+            lastSpoken = label;
             lastSpokenTime = now;
           }
         }
