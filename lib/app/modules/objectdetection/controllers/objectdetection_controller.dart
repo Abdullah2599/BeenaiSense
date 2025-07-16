@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'package:beenai_sense/Constants/API_key.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:get/get.dart';
@@ -55,7 +56,8 @@ class ObjectdetectionController extends GetxController {
   }
 
   Future<void> detectObject(File image) async {
-    final uri = Uri.parse('http://192.168.2.2:5000/predict');
+    print(Api.predict);
+    final uri = Uri.parse(Api.baseUrl + Api.predict);
     final request = http.MultipartRequest('POST', uri)
       ..files.add(await http.MultipartFile.fromPath('image', image.path));
 
