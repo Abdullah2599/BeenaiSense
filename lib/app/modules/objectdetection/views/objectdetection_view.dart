@@ -27,40 +27,44 @@ class ObjectdetectionView extends GetView<ObjectdetectionController> {
               return Stack(
                 children: [
                   CameraPreview(camCtrl),
-                  ...controller.detections.map((detection) {
-                    final box = detection['box'];
-                    final left = box[0] * scaleX;
-                    final top = box[1] * scaleY;
-                    final width = (box[2] - box[0]) * scaleX;
-                    final height = (box[3] - box[1]) * scaleY;
+                  Obx(() {
+                    return Stack(
+                      children: controller.detections.map((detection) {
+                        final box = detection['box'];
+                        final left = box[0] * scaleX;
+                        final top = box[1] * scaleY;
+                        final width = (box[2] - box[0]) * scaleX;
+                        final height = (box[3] - box[1]) * scaleY;
 
-                    return Positioned(
-                      left: left,
-                      top: top,
-                      width: width,
-                      height: height,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.red, width: 2),
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                        child: Align(
-                          alignment: Alignment.topLeft,
+                        return Positioned(
+                          left: left,
+                          top: top,
+                          width: width,
+                          height: height,
                           child: Container(
-                            color: Colors.red.withOpacity(0.7),
-                            padding: const EdgeInsets.all(4),
-                            child: Text(
-                              "${detection['label']} (${(detection['confidence'] * 100).toStringAsFixed(1)}%)",
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 12,
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.red, width: 2),
+                              borderRadius: BorderRadius.circular(4),
+                            ),
+                            child: Align(
+                              alignment: Alignment.topLeft,
+                              child: Container(
+                                color: Colors.red.withOpacity(0.7),
+                                padding: const EdgeInsets.all(4),
+                                child: Text(
+                                  "${detection['label']} (${(detection['confidence'] * 100).toStringAsFixed(1)}%)",
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 12,
+                                  ),
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      ),
+                        );
+                      }).toList(),
                     );
-                  }).toList(),
+                  }),
                 ],
               );
             },
