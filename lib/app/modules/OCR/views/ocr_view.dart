@@ -89,13 +89,20 @@ class OcrView extends GetView<OcrController> {
                   right: 0,
                   top: 40,
                   child: Center(
-                    child: Text(
-                      isProcessing ? 'Reading...' : 'Hold anywhere on screen to read',
-                      style: const TextStyle(
-                        color: Colors.white70,
-                        fontSize: 20,
-                        fontWeight: FontWeight.w600,
-                        letterSpacing: 1.1,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.black.withValues(alpha: 0.2),
+                        borderRadius: BorderRadius.circular(14),
+                      ),
+                      padding: const EdgeInsets.all(14),
+                      child: Text(
+                        isProcessing ? 'Reading...' : 'Hold anywhere on screen to read',
+                        style: const TextStyle(
+                          color: Colors.white70,
+                          fontSize: 10,
+                          fontWeight: FontWeight.w600,
+                          letterSpacing: 1.1,
+                        ),
                       ),
                     ),
                   ),

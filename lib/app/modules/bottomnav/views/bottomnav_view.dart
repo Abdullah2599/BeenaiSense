@@ -1,3 +1,4 @@
+import 'package:beenai_sense/Utility/Colors.dart';
 import 'package:beenai_sense/app/modules/OCR/views/ocr_view.dart';
 import 'package:beenai_sense/app/modules/objectdetection/views/objectdetection_view.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +20,23 @@ class BottomnavView extends GetView<BottomnavController> {
         },
         child: Scaffold(
           backgroundColor: Colors.transparent,
+          appBar: AppBar(
+            backgroundColor: AppColors.whiteColor,
+            surfaceTintColor: Colors.transparent,
+            elevation: 0,
+            toolbarHeight: 80,
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(5),
+                bottomRight: Radius.circular(5),
+              ),
+            ),
+            title: Image.asset(
+              "assets/logo.png",
+              height: 100,
+            ),
+            centerTitle: true,
+          ),
           body: Stack(
             children: [
               // IndexedStack to switch between different features
@@ -37,10 +55,10 @@ class BottomnavView extends GetView<BottomnavController> {
               Align(
                 alignment: Alignment.bottomCenter,
                 child: Container(
-                  height: 140,
+                  height: 160,
                   padding: const EdgeInsets.only(bottom: 20, top: 10),
                   decoration: BoxDecoration(
-                    color: Colors.black.withOpacity(0.75),
+                    color: AppColors.whiteColor,
                     borderRadius: const BorderRadius.vertical(top: Radius.circular(8)),
                     boxShadow: [
                       BoxShadow(
@@ -57,8 +75,8 @@ class BottomnavView extends GetView<BottomnavController> {
                         child: Text(
                           controller.modes[controller.selectedIndex.value],
                           key: ValueKey(controller.selectedIndex.value),
-                          style: const TextStyle(
-                            color: Colors.yellowAccent,
+                          style: TextStyle(
+                            color: AppColors.blackColor,
                             fontSize: 22,
                             fontWeight: FontWeight.bold,
                           ),
@@ -73,15 +91,15 @@ class BottomnavView extends GetView<BottomnavController> {
                           children: List.generate(controller.modes.length, (index) {
                             final isSelected = controller.selectedIndex.value == index;
                             return Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 8),
+                              padding: const EdgeInsets.symmetric(horizontal: 8,vertical: 8),
                               child: AnimatedContainer(
                                 duration: const Duration(milliseconds: 300),
                                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                                 decoration: BoxDecoration(
-                                  color: isSelected ? Colors.yellowAccent : Colors.white.withValues(alpha: 0.2),
+                                  color: isSelected ? AppColors.primary : AppColors.blackColor.withValues(alpha: 0.2),
                                   borderRadius: BorderRadius.circular(14),
                                   boxShadow: isSelected
-                                      ? [const BoxShadow(color: Colors.yellowAccent, blurRadius: 6, offset: Offset(0, 3))]
+                                      ? [const BoxShadow(color: AppColors.primary, blurRadius: 2, offset: Offset(0, 1))]
                                       : [],
                                 ),
                                 child: Column(
@@ -89,13 +107,13 @@ class BottomnavView extends GetView<BottomnavController> {
                                   children: [
                                     Icon(
                                       controller.getModeIcon(index),
-                                      color: isSelected ? Colors.black : Colors.white,
+                                      color: isSelected ? Colors.white : Colors.white,
                                     ),
                                     const SizedBox(height: 6),
                                     Text(
                                       controller.modes[index],
                                       style: TextStyle(
-                                        color: isSelected ? Colors.black : Colors.white,
+                                        color: isSelected ? Colors.white : Colors.white,
                                         fontWeight: FontWeight.w600,
                                         fontSize: 13,
                                       ),
