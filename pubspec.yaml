@@ -23,6 +23,7 @@ dependencies:
   google_mlkit_text_recognition: ^0.15.0
   flutter_native_splash: ^2.4.6
 
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -35,4 +36,3 @@ flutter:
 
   assets:
     - assets/
-  
