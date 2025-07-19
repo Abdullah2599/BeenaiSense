@@ -53,7 +53,10 @@ class BottomnavView extends GetView<BottomnavController> {
                 alignment: Alignment.bottomCenter,
                 child: Container(
                   height: 160,
-                  padding: const EdgeInsets.only(bottom: 20, top: 10),
+                  padding: EdgeInsets.only(
+                    top: 10,
+                    bottom: MediaQuery.of(context).padding.bottom + 6,
+                  ),
                   decoration: BoxDecoration(
                     color: AppColors.whiteColor,
                     borderRadius: const BorderRadius.vertical(
