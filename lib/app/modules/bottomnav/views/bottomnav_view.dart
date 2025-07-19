@@ -9,7 +9,7 @@ class BottomnavView extends GetView<BottomnavController> {
   const BottomnavView({super.key});
   @override
   Widget build(BuildContext context) {
-     return Obx(() {
+    return Obx(() {
       return GestureDetector(
         onHorizontalDragEnd: (details) {
           if (details.primaryVelocity! < 0) {
@@ -31,10 +31,7 @@ class BottomnavView extends GetView<BottomnavController> {
                 bottomRight: Radius.circular(5),
               ),
             ),
-            title: Image.asset(
-              "assets/logo.png",
-              height: 100,
-            ),
+            title: Image.asset("assets/logo.png", height: 100),
             centerTitle: true,
           ),
           body: Stack(
@@ -59,7 +56,9 @@ class BottomnavView extends GetView<BottomnavController> {
                   padding: const EdgeInsets.only(bottom: 20, top: 10),
                   decoration: BoxDecoration(
                     color: AppColors.whiteColor,
-                    borderRadius: const BorderRadius.vertical(top: Radius.circular(8)),
+                    borderRadius: const BorderRadius.vertical(
+                      top: Radius.circular(8),
+                    ),
                     boxShadow: [
                       BoxShadow(
                         color: Colors.black.withOpacity(0.2),
@@ -88,18 +87,37 @@ class BottomnavView extends GetView<BottomnavController> {
                         scrollDirection: Axis.horizontal,
                         padding: const EdgeInsets.symmetric(horizontal: 12),
                         child: Row(
-                          children: List.generate(controller.modes.length, (index) {
-                            final isSelected = controller.selectedIndex.value == index;
+                          children: List.generate(controller.modes.length, (
+                            index,
+                          ) {
+                            final isSelected =
+                                controller.selectedIndex.value == index;
                             return Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 8,vertical: 8),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8,
+                                vertical: 8,
+                              ),
                               child: AnimatedContainer(
                                 duration: const Duration(milliseconds: 300),
-                                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 16,
+                                  vertical: 12,
+                                ),
                                 decoration: BoxDecoration(
-                                  color: isSelected ? AppColors.primary : AppColors.blackColor.withValues(alpha: 0.2),
+                                  color: isSelected
+                                      ? AppColors.primary
+                                      : AppColors.blackColor.withValues(
+                                          alpha: 0.2,
+                                        ),
                                   borderRadius: BorderRadius.circular(14),
                                   boxShadow: isSelected
-                                      ? [const BoxShadow(color: AppColors.primary, blurRadius: 2, offset: Offset(0, 1))]
+                                      ? [
+                                          const BoxShadow(
+                                            color: AppColors.primary,
+                                            blurRadius: 2,
+                                            offset: Offset(0, 1),
+                                          ),
+                                        ]
                                       : [],
                                 ),
                                 child: Column(
@@ -107,13 +125,17 @@ class BottomnavView extends GetView<BottomnavController> {
                                   children: [
                                     Icon(
                                       controller.getModeIcon(index),
-                                      color: isSelected ? Colors.white : Colors.white,
+                                      color: isSelected
+                                          ? Colors.white
+                                          : Colors.white,
                                     ),
                                     const SizedBox(height: 6),
                                     Text(
                                       controller.modes[index],
                                       style: TextStyle(
-                                        color: isSelected ? Colors.white : Colors.white,
+                                        color: isSelected
+                                            ? Colors.white
+                                            : Colors.white,
                                         fontWeight: FontWeight.w600,
                                         fontSize: 13,
                                       ),
