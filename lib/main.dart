@@ -1,3 +1,4 @@
+import 'package:beenai_sense/Utility/language_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -18,7 +19,16 @@ void main() async {
   final prefs = await SharedPreferences.getInstance();
   final String? language = prefs.getString('selectedLanguage');
   
+  // Determine initial route
   final String initialRoute = language == null ? Routes.LANGUAGESELECTION : Routes.BOTTOMNAV;
+  
+  // Determine locale based on saved preference
+  final locale = language == 'ur-PK' 
+      ? const Locale('ur', 'PK') 
+      : const Locale('en', 'US');
+      
+  // Register language helper as singleton for global access
+  Get.put(LanguageHelper());
 
   runApp(
     GetMaterialApp(
@@ -26,9 +36,16 @@ void main() async {
       initialRoute: initialRoute,
       debugShowCheckedModeBanner: false,
       translations: AppTranslations(),
-      locale: language == 'ur-PK' ? const Locale('ur', 'PK') : const Locale('en', 'US'),
+      locale: locale,
       fallbackLocale: const Locale('en', 'US'),
       getPages: AppPages.routes,
+      theme: ThemeData(
+        useMaterial3: true,
+        primaryColor: Colors.blue,
+        textTheme: const TextTheme(
+          bodyMedium: TextStyle(fontFamily: 'Roboto'),
+        ),
+      ),
     ),
   );
 }

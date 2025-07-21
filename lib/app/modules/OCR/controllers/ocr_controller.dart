@@ -42,7 +42,7 @@ class OcrController extends GetxController {
       isCameraReady.value = true;
       
       // Speak instructions in the selected language
-      await TTSHelper.speakTranslated('ocr_instructions');
+      // await TTSHelper.speakTranslated('ocr_instructions');
     } catch (e) {
       Get.snackbar('Camera Error', 'Could not initialize camera');
     }

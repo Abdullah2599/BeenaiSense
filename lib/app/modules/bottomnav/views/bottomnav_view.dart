@@ -75,7 +75,7 @@ class BottomnavView extends GetView<BottomnavController> {
                       AnimatedSwitcher(
                         duration: const Duration(milliseconds: 300),
                         child: Text(
-                          controller.modes[controller.selectedIndex.value],
+                          controller.modes[controller.selectedIndex.value].tr,
                           key: ValueKey(controller.selectedIndex.value),
                           style: TextStyle(
                             color: AppColors.blackColor,

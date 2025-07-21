@@ -1,62 +1,121 @@
+import 'package:beenai_sense/Utility/Colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../controllers/languageselection_controller.dart';
+
 
 class LanguageselectionView extends GetView<LanguageselectionController> {
   const LanguageselectionView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    controller.speakLanguageInstructions();
+    final Size screenSize = MediaQuery.of(context).size;
+    final double height = screenSize.height;
+
+    // Zone boundaries
+    final double centerZoneTop = height * 0.35;
+    final double centerZoneBottom = height * 0.65;
+
     return Scaffold(
       backgroundColor: Colors.black,
       body: GestureDetector(
         behavior: HitTestBehavior.opaque,
         onTapDown: (TapDownDetails details) {
-          final Size screenSize = MediaQuery.of(context).size;
-          final double dx = details.globalPosition.dx;
           final double dy = details.globalPosition.dy;
 
-          final double height = screenSize.height;
-          final double centerZoneTop = height * 0.35;
-          final double centerZoneBottom = height * 0.65;
-
-          final bool isCenterZone =
-              dy >= centerZoneTop && dy <= centerZoneBottom;
+          final bool isCenterZone = dy >= centerZoneTop && dy <= centerZoneBottom;
           final bool isTopTap = dy < centerZoneTop;
           final bool isBottomTap = dy > centerZoneBottom;
 
           if (isCenterZone) {
-            controller.speakLanguageInstructions(); // Replay instructions
+            controller.speakLanguageInstructions();
           } else if (isTopTap) {
             controller.selectEnglish();
           } else if (isBottomTap) {
             controller.selectUrdu();
           }
         },
-
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Image.asset('assets/logo.png', width: 150, height: 150),
-              const SizedBox(height: 40),
-              const Text(
-                'Welcome to Beenai Sense',
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
+        child: Column(
+          children: [
+            // Top Zone
+            Expanded(
+              flex: 3,
+              child: Container(
+                color: AppColors.primary.withOpacity(0.1),
+                alignment: Alignment.center,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    Icon(Icons.language, color: Colors.white70, size: 36),
+                    SizedBox(height: 8),
+                    Text(
+                      'Tap here for English',
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: Colors.white70,
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              const SizedBox(height: 20),
-              const Text(
-                'Tap the top for English\nTap the bottom for Urdu',
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 18, color: Colors.white70),
+            ),
+
+            // Center Zone
+            Expanded(
+              flex: 2,
+              child: Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      AppColors.secondary.withOpacity(0.15),
+                      AppColors.secondary.withOpacity(0.05),
+                    ],
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                  ),
+                ),
+                alignment: Alignment.center,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    Icon(Icons.replay_circle_filled, color: Colors.white54, size: 40),
+                    SizedBox(height: 8),
+                    Text(
+                      'Tap here to replay instructions',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.white60,
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ],
-          ),
+            ),
+
+            // Bottom Zone
+            Expanded(
+              flex: 3,
+              child: Container(
+                color: AppColors.primary.withOpacity(0.1),
+                alignment: Alignment.center,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    Icon(Icons.language, color: Colors.white70, size: 36),
+                    SizedBox(height: 8),
+                    Text(
+                      'اردو کے لیے یہاں تھپتھپائیں',
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: Colors.white70,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );

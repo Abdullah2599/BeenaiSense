@@ -19,9 +19,10 @@ class ObjectdetectionController extends GetxController {
   var selectedLanguage = 'en-US'.obs;
 
   @override
-  void onInit() {
+  void onInit() async {
     super.onInit();
-    loadLanguagePreference();
+    await loadLanguagePreference();
+    // await initializeCamera();
   }
 
   Future<void> loadLanguagePreference() async {
@@ -29,7 +30,6 @@ class ObjectdetectionController extends GetxController {
     selectedLanguage.value = prefs.getString('selectedLanguage') ?? 'en-US';
     // Initialize TTS with selected language
     await TTSHelper.initTTS();
-    // await initializeCamera();
   }
 
   Future<void> initializeCamera() async {
@@ -51,7 +51,7 @@ class ObjectdetectionController extends GetxController {
       );
       
       // Speak instructions in the selected language
-      await TTSHelper.speakTranslated('object_instructions');
+      // await TTSHelper.speakTranslated('object_instructions');
     } catch (e) {
       Get.snackbar("Camera Error", "Failed to initialize camera");
     }
