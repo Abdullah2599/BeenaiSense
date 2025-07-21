@@ -1,10 +1,11 @@
 import 'dart:io';
+import 'package:beenai_sense/Utility/tts_helper.dart';
 import 'package:camera/camera.dart';
-import 'package:flutter_tts/flutter_tts.dart';
 import 'package:get/get.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class OcrController extends GetxController {
   var cameraController = Rx<CameraController?>(null);
@@ -13,12 +14,19 @@ class OcrController extends GetxController {
   var recognizedText = ''.obs;
   var recognizedSentences = <String>[].obs;
   var currentSpokenIndex = 0.obs;
-  final tts = FlutterTts();
+  var selectedLanguage = 'en-US'.obs;
 
   @override
   void onInit() {
     super.onInit();
-    // Camera initialization is managed by navigation logic, not here.
+    loadLanguagePreference();
+  }
+
+  Future<void> loadLanguagePreference() async {
+    final prefs = await SharedPreferences.getInstance();
+    selectedLanguage.value = prefs.getString('selectedLanguage') ?? 'en-US';
+    // Initialize TTS with selected language
+    await TTSHelper.initTTS();
   }
 
   Future<void> initializeCamera() async {
@@ -32,6 +40,9 @@ class OcrController extends GetxController {
       cameraController.value = CameraController(camera, ResolutionPreset.high, enableAudio: false);
       await cameraController.value!.initialize();
       isCameraReady.value = true;
+      
+      // Speak instructions in the selected language
+      await TTSHelper.speakTranslated('ocr_instructions');
     } catch (e) {
       Get.snackbar('Camera Error', 'Could not initialize camera');
     }
@@ -43,7 +54,7 @@ class OcrController extends GetxController {
     recognizedText.value = '';
     recognizedSentences.value = [];
     currentSpokenIndex.value = 0;
-    await tts.stop();
+    await TTSHelper.stop();
     isCameraReady.value = false;
   }
 
@@ -53,10 +64,9 @@ class OcrController extends GetxController {
   }
 
   Future<void> _speakSentencesSequentially() async {
-    await tts.awaitSpeakCompletion(true);
     for (int i = 0; i < recognizedSentences.length; i++) {
       currentSpokenIndex.value = i;
-      await tts.speak(recognizedSentences[i]);
+      await TTSHelper.speak(recognizedSentences[i]);
       // Optionally add a small delay between sentences
       await Future.delayed(const Duration(milliseconds: 300));
     }
@@ -68,32 +78,44 @@ class OcrController extends GetxController {
     isProcessing.value = true;
     recognizedText.value = '';
     try {
-      // Spoken countdown for accessibility
-      await tts.speak('Hold still. Capturing in 1 seconds.');
+      // Spoken countdown for accessibility in selected language
+      if (selectedLanguage.value == 'ur-PK') {
+        await TTSHelper.speak('حرکت نہ کریں۔ 1 سیکنڈ میں تصویر لی جائے گی۔');
+      } else {
+        await TTSHelper.speak('Hold still. Capturing in 1 seconds.');
+      }
       await Future.delayed(const Duration(seconds: 1));
-      // Optional: haptic feedback (if context available)
-      // Feedback.forLongPress(context); // context not available here, handled in view
 
       // Double check not processing again
       if (!isProcessing.value) return;
       final image = await cameraController.value!.takePicture();
       final inputImage = InputImage.fromFilePath(image.path);
+      
+      // Use Latin script for now since Arabic script might not be available in the current version
+      // In a real app, you might want to check available scripts or use a different library for Urdu
       final textRecognizer = TextRecognizer(script: TextRecognitionScript.latin);
       final RecognizedText result = await textRecognizer.processImage(inputImage);
       await textRecognizer.close();
       recognizedText.value = result.text.trim();
       recognizedSentences.value = _splitToSentences(recognizedText.value);
       currentSpokenIndex.value = 0;
+      
       if (recognizedSentences.isNotEmpty) {
+        // First announce that text was detected
+        await TTSHelper.speakTranslated('text_detected');
+        await Future.delayed(const Duration(milliseconds: 500));
         await _speakSentencesSequentially();
       } else {
-        await tts.speak('Unable to detect the text. Please try again.');
-        Get.snackbar('OCR', 'Unable to detect the text. Please try again.');
+        await TTSHelper.speakTranslated('no_text');
+        Get.snackbar('OCR', 'no_text'.tr);
       }
     } catch (e, stacktrace) {
-      await tts.speak('An error occurred during text recognition. Please try again.');
-      Get.snackbar('OCR Error', 'Failed to recognize text: \\n${e.toString()}');
-      // Optionally log error and stacktrace
+      if (selectedLanguage.value == 'ur-PK') {
+        await TTSHelper.speak('متن کی شناخت کے دوران ایک خرابی پیش آئی۔ براہ کرم دوبارہ کوشش کریں۔');
+      } else {
+        await TTSHelper.speak('An error occurred during text recognition. Please try again.');
+      }
+      Get.snackbar('OCR Error', 'Failed to recognize text: \n${e.toString()}');
       print('OCR Error: $e\n$stacktrace');
     } finally {
       isProcessing.value = false;

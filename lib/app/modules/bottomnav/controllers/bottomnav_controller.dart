@@ -11,11 +11,11 @@ class BottomnavController extends GetxController {
 
   RxInt selectedIndex = 0.obs;
   final List<String> modes = [
-    'Object Detector',
-    'Text Reader',
-    'Currency Reader',
-    'Color Identifier',
-    'Scene Describer',
+    'object_detection',
+    'ocr'.tr,
+    'currency_reader',
+    'color_identifier',
+    'scene_describer',
   ];
 
   @override
@@ -36,7 +36,7 @@ class BottomnavController extends GetxController {
     await tts.setSpeechRate(0.5);
     await tts.setPitch(1.0);
     await tts.setVolume(1.0);
-    await tts.speak("${modes[selectedIndex.value]}");
+    await tts.speak("${modes[selectedIndex.value]}".tr);
   }
 
   void swipeLeft() {
@@ -91,7 +91,7 @@ class BottomnavController extends GetxController {
 
   void onDoubleTap() {
     HapticFeedback.vibrate();
-    tts.speak("Activating ${modes[selectedIndex.value]}");
+    tts.speak("Activating ${modes[selectedIndex.value]}".tr);
   }
 
   void scrollToIndex(int index) {

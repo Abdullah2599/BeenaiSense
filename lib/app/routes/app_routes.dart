@@ -3,18 +3,18 @@ part of 'app_pages.dart';
 
 abstract class Routes {
   Routes._();
-  static const HOME = _Paths.HOME;
   static const CAMERASCREEN = _Paths.CAMERASCREEN;
   static const BOTTOMNAV = _Paths.BOTTOMNAV;
   static const OCR = _Paths.OCR;
   static const OBJECTDETECTION = _Paths.OBJECTDETECTION;
+  static const LANGUAGESELECTION = _Paths.LANGUAGESELECTION;
 }
 
 abstract class _Paths {
   _Paths._();
-  static const HOME = '/home';
   static const CAMERASCREEN = '/camerascreen';
   static const BOTTOMNAV = '/bottomnav';
   static const OCR = '/ocr';
   static const OBJECTDETECTION = '/objectdetection';
+  static const LANGUAGESELECTION = '/languageselection';
 }

@@ -2,20 +2,35 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:beenai_sense/Constants/API_key.dart';
+import 'package:beenai_sense/Utility/tts_helper.dart';
 import 'package:camera/camera.dart';
-import 'package:flutter_tts/flutter_tts.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ObjectdetectionController extends GetxController {
   var isLoading = false.obs;
   var detections = <Map<String, dynamic>>[].obs;
-  final tts = FlutterTts();
   var cameraController = Rx<CameraController?>(null);
   var isCameraReady = false.obs;
   Timer? frameTimer;
   String lastSpoken = '';
   int lastSpokenTime = 0;
+  var selectedLanguage = 'en-US'.obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+    loadLanguagePreference();
+  }
+
+  Future<void> loadLanguagePreference() async {
+    final prefs = await SharedPreferences.getInstance();
+    selectedLanguage.value = prefs.getString('selectedLanguage') ?? 'en-US';
+    // Initialize TTS with selected language
+    await TTSHelper.initTTS();
+    // await initializeCamera();
+  }
 
   Future<void> initializeCamera() async {
     try {
@@ -34,6 +49,9 @@ class ObjectdetectionController extends GetxController {
         const Duration(seconds: 2),
         (_) => captureAndDetect(),
       );
+      
+      // Speak instructions in the selected language
+      await TTSHelper.speakTranslated('object_instructions');
     } catch (e) {
       Get.snackbar("Camera Error", "Failed to initialize camera");
     }
@@ -45,7 +63,7 @@ class ObjectdetectionController extends GetxController {
     cameraController.value?.dispose();
     cameraController.value = null;
     detections.value = [];
-    await tts.stop();
+    await TTSHelper.stop();
     isCameraReady.value = false;
   }
 
@@ -56,7 +74,6 @@ class ObjectdetectionController extends GetxController {
   }
 
   Future<void> detectObject(File image) async {
-    print(Api.predict);
     final uri = Uri.parse(Api.baseUrl + Api.predict);
     final request = http.MultipartRequest('POST', uri)
       ..files.add(await http.MultipartFile.fromPath('image', image.path));
@@ -82,10 +99,23 @@ class ObjectdetectionController extends GetxController {
 
           if (confidence >= 0.70 &&
               (label != lastSpoken || now - lastSpokenTime > 4000)) {
-            await tts.speak("I see $label");
+            
+            // Use localized speech based on selected language
+            if (selectedLanguage.value == 'ur-PK') {
+              // For Urdu, use the translated "Detected: " + object name
+              final detectedText = 'detected_object'.tr + getUrduTranslation(label);
+              await TTSHelper.speak(detectedText);
+            } else {
+              // For English
+              await TTSHelper.speak("I see ${label}");
+            }
+            
             lastSpoken = label;
             lastSpokenTime = now;
           }
+        } else {
+          // No objects detected
+          // await TTSHelper.speakTranslated('no_object');
         }
       } else {
         Get.snackbar("Error", data['error'] ?? 'Unknown error');
@@ -93,6 +123,28 @@ class ObjectdetectionController extends GetxController {
     } catch (e) {
       Get.snackbar("Error", "Connection failed");
     }
+  }
+
+  // Helper method to get Urdu translation for common objects
+  // In a real app, you might use an API or a more comprehensive translation system
+  String getUrduTranslation(String englishLabel) {
+    final Map<String, String> translations = {
+      'person': 'انسان',
+      'car': 'گاڑی',
+      'chair': 'کرسی',
+      'bottle': 'بوتل',
+      'cup': 'کپ',
+      'dog': 'کتا',
+      'cat': 'بلی',
+      'book': 'کتاب',
+      'phone': 'فون',
+      'laptop': 'لیپ ٹاپ',
+      'table': 'میز',
+      'door': 'دروازہ',
+      'window': 'کھڑکی',
+    };
+
+    return translations[englishLabel.toLowerCase()] ?? englishLabel;
   }
 
   @override

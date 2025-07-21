@@ -134,7 +134,7 @@ class BottomnavView extends GetView<BottomnavController> {
                                     ),
                                     const SizedBox(height: 6),
                                     Text(
-                                      controller.modes[index],
+                                      controller.modes[index].tr,
                                       style: TextStyle(
                                         color: isSelected
                                             ? Colors.white
