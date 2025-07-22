@@ -1,6 +1,8 @@
 import 'package:beenai_sense/Utility/Colors.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../controllers/languageselection_controller.dart';
 
 
@@ -17,7 +19,7 @@ class LanguageselectionView extends GetView<LanguageselectionController> {
     final double centerZoneBottom = height * 0.65;
 
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: AppColors.whiteColor,
       body: GestureDetector(
         behavior: HitTestBehavior.opaque,
         onTapDown: (TapDownDetails details) {
@@ -41,18 +43,29 @@ class LanguageselectionView extends GetView<LanguageselectionController> {
             Expanded(
               flex: 3,
               child: Container(
-                color: AppColors.primary.withOpacity(0.1),
+                decoration: BoxDecoration(
+                // color: AppColors.secondary.withValues(alpha: 0.5),
+                gradient: LinearGradient(
+                  colors: [
+                    AppColors.secondary.withValues(alpha: 0.7),
+                    AppColors.secondary,
+                  ],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                ),
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(20), bottom: Radius.circular(20)),
+                ),
                 alignment: Alignment.center,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: const [
-                    Icon(Icons.language, color: Colors.white70, size: 36),
-                    SizedBox(height: 8),
+                    FaIcon(FontAwesomeIcons.language, color: Colors.white, size: 36),
+                    SizedBox(height: 12),
                     Text(
                       'Tap here for English',
                       style: TextStyle(
-                        fontSize: 18,
-                        color: Colors.white70,
+                        fontSize: 24,
+                        color: Colors.white,
                       ),
                     ),
                   ],
@@ -65,26 +78,20 @@ class LanguageselectionView extends GetView<LanguageselectionController> {
               flex: 2,
               child: Container(
                 decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      AppColors.secondary.withOpacity(0.15),
-                      AppColors.secondary.withOpacity(0.05),
-                    ],
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                  ),
+                  color: AppColors.whiteColor,
+                 
                 ),
                 alignment: Alignment.center,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: const [
-                    Icon(Icons.replay_circle_filled, color: Colors.white54, size: 40),
+                    FaIcon(FontAwesomeIcons.repeat, color: Colors.black, size: 40),
                     SizedBox(height: 8),
                     Text(
                       'Tap here to replay instructions',
                       style: TextStyle(
                         fontSize: 16,
-                        color: Colors.white60,
+                        color: Colors.black,
                       ),
                     ),
                   ],
@@ -96,20 +103,33 @@ class LanguageselectionView extends GetView<LanguageselectionController> {
             Expanded(
               flex: 3,
               child: Container(
-                color: AppColors.primary.withOpacity(0.1),
+                decoration: BoxDecoration(
+                // color: AppColors.primary.withValues(alpha: 0.5),
+                gradient: LinearGradient(
+                  colors: [
+                    AppColors.primary,
+                    AppColors.primary.withValues(alpha: 0.7),
+                  ],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                ),
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(20), bottom: Radius.circular(20)),
+                ),
                 alignment: Alignment.center,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    Icon(Icons.language, color: Colors.white70, size: 36),
-                    SizedBox(height: 8),
+                  children:  [
+                    FaIcon(FontAwesomeIcons.language, color: Colors.white, size: 36),
+                    SizedBox(height: 12),
                     Text(
-                      'اردو کے لیے یہاں تھپتھپائیں',
+                      'اردو کے لیے یہاں ٹیپ کریں',
                       style: TextStyle(
-                        fontSize: 18,
-                        color: Colors.white70,
+                        fontSize: 24,
+                        color: Colors.white,
+                        fontFamily: GoogleFonts.notoNastaliqUrdu().fontFamily,
                       ),
                       textAlign: TextAlign.center,
+                      
                     ),
                   ],
                 ),

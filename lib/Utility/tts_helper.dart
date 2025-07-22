@@ -16,10 +16,59 @@ class TTSHelper {
       await _flutterTts.setSpeechRate(0.5);
       await _flutterTts.setVolume(1.0);
       await _flutterTts.setPitch(1.0);
+      await setTtsVoice(language ?? 'en-US');
+
+      // await _flutterTts.setVoice(language == 'en-US' ? const Voice(
+      //   name: 'en-US-Wavenet-1',
+      //   locale: 'en-US',
+      //   languageCode: 'en-US',
+      //   engine: 'wave_net',
+      // ) : const Voice(
+      //   name: 'ur-PK-Wavenet-1',
+      // ));
       
       _isInitialized = true;
     }
   }
+
+
+static Future<void> setTtsVoice(String languageCode) async {
+  final voices = await _flutterTts.getVoices;
+  Map<String, String>? selectedVoice;
+
+  final fallbackVoice = {
+    'name': 'en-us-x-iom-local',
+    'locale': 'en-US',
+  };
+
+  // Define preferences
+  final voicePreferences = {
+    'en-US': 'en-us-x-iom-local',
+    'ur-PK': 'ur-pk-x-cfn-local',
+    'ur-IN': 'ur-in-x-urb-local', // optional fallback
+  };
+
+  // Try to find matching voice
+  final voiceName = voicePreferences[languageCode];
+
+  if (voiceName != null) {
+    final match = voices.firstWhere(
+      (v) => v['name'] == voiceName,
+      orElse: () => null,
+    );
+    if (match != null) {
+      selectedVoice = {
+        'name': match['name'],
+        'locale': match['locale'],
+      };
+    }
+  }
+
+  // Fallback if none found
+  await _flutterTts.setVoice(selectedVoice ?? fallbackVoice);
+}
+
+
   
   // Speak text in the selected language
   static Future<void> speak(String text) async {

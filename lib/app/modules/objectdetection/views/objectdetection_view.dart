@@ -1,3 +1,4 @@
+import 'package:beenai_sense/Utility/Colors.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -9,12 +10,12 @@ class ObjectdetectionView extends GetView<ObjectdetectionController> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Colors.grey[900],
+        backgroundColor: Colors.black,
         body: Obx(() {
           final camCtrl = controller.cameraController.value;
           final isCameraReady = controller.isCameraReady.value;
           if (!isCameraReady || camCtrl == null) {
-            return const Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator(color: AppColors.primary));
           }
 
           return LayoutBuilder(
@@ -49,7 +50,7 @@ class ObjectdetectionView extends GetView<ObjectdetectionController> {
                             child: Align(
                               alignment: Alignment.topLeft,
                               child: Container(
-                                color: Colors.red.withOpacity(0.7),
+                                color: Colors.red.withValues(alpha: 0.7),
                                 padding: const EdgeInsets.all(4),
                                 child: Text(
                                   "${detection['label']} (${(detection['confidence'] * 100).toStringAsFixed(1)}%)",

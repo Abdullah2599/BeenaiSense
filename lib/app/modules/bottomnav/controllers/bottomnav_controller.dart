@@ -3,8 +3,8 @@ import 'package:beenai_sense/app/modules/OCR/controllers/ocr_controller.dart';
 import 'package:beenai_sense/app/modules/objectdetection/controllers/objectdetection_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class BottomnavController extends GetxController {
   final ScrollController scrollController = ScrollController();
@@ -13,9 +13,9 @@ class BottomnavController extends GetxController {
   final List<String> modes = [
     'object_detection',
     'ocr',
+    'beenai_sense',
     'currency_reader',
-    'color_identifier',
-    'scene_describer',
+    'settings',
   ];
   
 
@@ -123,15 +123,15 @@ class BottomnavController extends GetxController {
   IconData getModeIcon(int index) {
     switch (index) {
       case 0:
-        return Icons.search;
+        return FontAwesomeIcons.magnifyingGlass;
       case 1:
-        return Icons.text_fields;
+        return FontAwesomeIcons.newspaper;
       case 2:
-        return Icons.currency_exchange;
+        return FontAwesomeIcons.comments;
       case 3:
-        return Icons.color_lens;
+        return FontAwesomeIcons.moneyBill;
       case 4:
-        return Icons.landscape;
+        return FontAwesomeIcons.gear;
       default:
         return Icons.device_unknown;
     }

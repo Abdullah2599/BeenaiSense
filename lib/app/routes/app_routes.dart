@@ -8,6 +8,7 @@ abstract class Routes {
   static const OCR = _Paths.OCR;
   static const OBJECTDETECTION = _Paths.OBJECTDETECTION;
   static const LANGUAGESELECTION = _Paths.LANGUAGESELECTION;
+  static const STATIC = _Paths.STATIC;
 }
 
 abstract class _Paths {
@@ -17,4 +18,5 @@ abstract class _Paths {
   static const OCR = '/ocr';
   static const OBJECTDETECTION = '/objectdetection';
   static const LANGUAGESELECTION = '/languageselection';
+  static const STATIC = '/static';
 }

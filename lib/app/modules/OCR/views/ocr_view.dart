@@ -1,3 +1,4 @@
+import 'package:beenai_sense/Utility/Colors.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -28,8 +29,10 @@ class OcrView extends GetView<OcrController> {
                 if (isCameraReady && camCtrl != null)
                   Positioned.fill(child: CameraPreview(camCtrl))
                 else
-                  const Center(child: CircularProgressIndicator()),
-      
+                  const Center(
+                    child: CircularProgressIndicator(color: AppColors.primary),
+                  ),
+
                 // Overlay for recognized text
                 if (recognizedText.isNotEmpty)
                   Positioned(
@@ -39,50 +42,31 @@ class OcrView extends GetView<OcrController> {
                     child: Container(
                       margin: const EdgeInsets.symmetric(horizontal: 24),
                       padding: const EdgeInsets.all(14),
+                      constraints: const BoxConstraints(
+                        maxHeight: 180, // Limit the height of the container
+                        minHeight: 40,
+                      ),
                       decoration: BoxDecoration(
-                        color: Colors.black.withOpacity(0.8),
+                        color: AppColors.blackColor.withValues(alpha: 0.8),
                         borderRadius: BorderRadius.circular(14),
                       ),
-                      child: Obx(() {
-                        final sentences = controller.recognizedSentences;
-                        final currentIdx = controller.currentSpokenIndex.value;
-                        return SizedBox(
-                          height: 110,
-                          child: Scrollbar(
-                            thumbVisibility: true,
-                            child: ListView.builder(
-                              itemCount: sentences.length,
-                              itemBuilder: (context, idx) {
-                                final isCurrent = idx == currentIdx;
-                                return Padding(
-                                  padding: const EdgeInsets.symmetric(vertical: 2.0),
-                                  child: Text(
-                                    sentences[idx],
-                                    style: TextStyle(
-                                      color: isCurrent ? Colors.yellow : Colors.white,
-                                      fontSize: 15,
-                                      fontWeight: isCurrent ? FontWeight.bold : FontWeight.normal,
-                                    ),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                );
-                              },
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 2.0),
+                        child: SingleChildScrollView(
+                          child: Text(
+                            recognizedText,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
                             ),
+                            textAlign: TextAlign.center,
                           ),
-                        );
-                      }),
+                        ),
+                      ),
                     ),
                   ),
-      
-                // // Loading spinner overlay
-                // if (isProcessing)
-                //   Container(
-                //     color: Colors.black.withOpacity(0.5),
-                //     child: const Center(
-                //       child: CircularProgressIndicator(color: Colors.blue, strokeWidth: 6),
-                //     ),
-                //   ),
-      
+
                 // Accessibility hint at the bottom
                 Positioned(
                   left: 0,
@@ -96,12 +80,12 @@ class OcrView extends GetView<OcrController> {
                       ),
                       padding: const EdgeInsets.all(14),
                       child: Text(
-                        isProcessing ? 'Reading...' : 'Hold anywhere on screen to read',
+                        isProcessing ? 'reading'.tr : 'hold_anywhere'.tr,
                         style: const TextStyle(
                           color: Colors.white70,
-                          fontSize: 10,
+                          fontSize: 12,
                           fontWeight: FontWeight.w600,
-                          letterSpacing: 1.1,
+                          // letterSpacing: 1.1,
                         ),
                       ),
                     ),

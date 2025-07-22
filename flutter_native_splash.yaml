@@ -1,13 +1,11 @@
-
 flutter_native_splash:
-  color: "#000000"
-  color_dark: "#000000"
-  image: "assets/logo.png"
-  android_gravity: center
-  ios_content_mode: scaleAspectFit
+  color: "#FFFFFF"  # White background for light mode
+  color_dark: "#FFFFFF"  # White background for dark mode (if you want consistency across modes)
+  image: "assets/logo.png"  # The logo image
+  android_gravity: center  # Center the image on Android
+  ios_content_mode: scaleAspectFit  # Scale the image properly on iOS
 
   android_12:
-    color: "#000000"
-    color_dark: "#000000"
-    image: "assets/logo.png"
-
+    color: "#FFFFFF"  # White background for Android 12+
+    color_dark: "#FFFFFF"  # White background for Android 12+ dark mode
+    image: "assets/logo.png"  # The logo image for Android 12+

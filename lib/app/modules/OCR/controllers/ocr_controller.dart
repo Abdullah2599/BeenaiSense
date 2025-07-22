@@ -1,10 +1,7 @@
-import 'dart:io';
 import 'package:beenai_sense/Utility/tts_helper.dart';
 import 'package:camera/camera.dart';
 import 'package:get/get.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:path/path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class OcrController extends GetxController {
@@ -58,20 +55,20 @@ class OcrController extends GetxController {
     isCameraReady.value = false;
   }
 
-  List<String> _splitToSentences(String text) {
-    // Simple sentence split (can be improved for more languages)
-    return text.split(RegExp(r'(?<=[.!?])\s+')).where((s) => s.trim().isNotEmpty).toList();
-  }
+  // List<String> _splitToSentences(String text) {
+  //   // Simple sentence split (can be improved for more languages)
+  //   return text.split(RegExp(r'(?<=[.!?])\s+')).where((s) => s.trim().isNotEmpty).toList();
+  // }
 
-  Future<void> _speakSentencesSequentially() async {
-    for (int i = 0; i < recognizedSentences.length; i++) {
-      currentSpokenIndex.value = i;
-      await TTSHelper.speak(recognizedSentences[i]);
-      // Optionally add a small delay between sentences
-      await Future.delayed(const Duration(milliseconds: 300));
-    }
-    currentSpokenIndex.value = -1;
-  }
+  // Future<void> _speakSentencesSequentially() async {
+  //   for (int i = 0; i < recognizedSentences.length; i++) {
+  //     currentSpokenIndex.value = i;
+  //     await TTSHelper.speak(recognizedSentences[i]);
+  //     // Optionally add a small delay between sentences
+  //     await Future.delayed(const Duration(milliseconds: 300));
+  //   }
+  //   currentSpokenIndex.value = -1;
+  // }
 
   Future<void> captureAndReadText() async {
     if (isProcessing.value || cameraController.value == null || !(cameraController.value!.value.isInitialized)) return;
@@ -84,7 +81,7 @@ class OcrController extends GetxController {
       } else {
         await TTSHelper.speak('Hold still. Capturing in 1 seconds.');
       }
-      await Future.delayed(const Duration(seconds: 1));
+      await Future.delayed(const Duration(seconds: 3));
 
       // Double check not processing again
       if (!isProcessing.value) return;
@@ -97,14 +94,15 @@ class OcrController extends GetxController {
       final RecognizedText result = await textRecognizer.processImage(inputImage);
       await textRecognizer.close();
       recognizedText.value = result.text.trim();
-      recognizedSentences.value = _splitToSentences(recognizedText.value);
-      currentSpokenIndex.value = 0;
+      // recognizedSentences.value = _splitToSentences(recognizedText.value);
+      // currentSpokenIndex.value = 0;
       
-      if (recognizedSentences.isNotEmpty) {
+      if (recognizedText.value.isNotEmpty) {
         // First announce that text was detected
-        await TTSHelper.speakTranslated('text_detected');
-        await Future.delayed(const Duration(milliseconds: 500));
-        await _speakSentencesSequentially();
+        // await TTSHelper.speakTranslated('text_detected');
+        // await Future.delayed(const Duration(seconds: 5));
+        // await _speakSentencesSequentially();
+        await TTSHelper.speak(recognizedText.value);
       } else {
         await TTSHelper.speakTranslated('no_text');
         Get.snackbar('OCR', 'no_text'.tr);

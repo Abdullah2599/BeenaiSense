@@ -10,6 +10,8 @@ import '../modules/languageselection/bindings/languageselection_binding.dart';
 import '../modules/languageselection/views/languageselection_view.dart';
 import '../modules/objectdetection/bindings/objectdetection_binding.dart';
 import '../modules/objectdetection/views/objectdetection_view.dart';
+import '../modules/static/bindings/static_binding.dart';
+import '../modules/static/views/static_view.dart';
 
 part 'app_routes.dart';
 
@@ -43,6 +45,11 @@ class AppPages {
       name: _Paths.LANGUAGESELECTION,
       page: () => const LanguageselectionView(),
       binding: LanguageselectionBinding(),
+    ),
+    GetPage(
+      name: _Paths.STATIC,
+      page: () => const StaticView(),
+      binding: StaticBinding(),
     ),
   ];
 }

@@ -62,7 +62,7 @@ class CamerascreenController extends GetxController {
   void onDoubleTap() {
     HapticFeedback.vibrate();
     tts.speak("Activating ${modes[selectedIndex.value]}");
-    // TODO: Navigate to actual screen
+   
   }
 
   void scrollToIndex(int index) {

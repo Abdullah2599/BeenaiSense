@@ -2,6 +2,7 @@ import 'package:beenai_sense/Utility/Colors.dart';
 import 'package:beenai_sense/app/modules/OCR/views/ocr_view.dart';
 import 'package:beenai_sense/app/modules/objectdetection/views/objectdetection_view.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import '../controllers/bottomnav_controller.dart';
 
@@ -64,7 +65,7 @@ class BottomnavView extends GetView<BottomnavController> {
                     ),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.2),
+                        color: Colors.black.withValues(alpha: 0.2),
                         offset: const Offset(0, -2),
                         blurRadius: 3,
                       ),
@@ -108,15 +109,15 @@ class BottomnavView extends GetView<BottomnavController> {
                                 ),
                                 decoration: BoxDecoration(
                                   color: isSelected
-                                      ? AppColors.primary
+                                      ? AppColors.secondary
                                       : AppColors.blackColor.withValues(
-                                          alpha: 0.2,
+                                          alpha: 0.35,
                                         ),
                                   borderRadius: BorderRadius.circular(14),
                                   boxShadow: isSelected
                                       ? [
                                           const BoxShadow(
-                                            color: AppColors.primary,
+                                            color: AppColors.secondary,
                                             blurRadius: 2,
                                             offset: Offset(0, 1),
                                           ),
@@ -126,7 +127,7 @@ class BottomnavView extends GetView<BottomnavController> {
                                 child: Column(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    Icon(
+                                    FaIcon(
                                       controller.getModeIcon(index),
                                       color: isSelected
                                           ? Colors.white
