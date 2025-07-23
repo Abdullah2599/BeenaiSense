@@ -31,6 +31,11 @@ class TTSHelper {
     }
   }
 
+//set speed of tts
+static Future<void> setTtsSpeed(double speed) async {
+  await _flutterTts.setSpeechRate(speed);
+}
+
 
 static Future<void> setTtsVoice(String languageCode) async {
   final voices = await _flutterTts.getVoices;
@@ -80,6 +85,16 @@ static Future<void> setTtsVoice(String languageCode) async {
   // Speak translated text based on the key
   static Future<void> speakTranslated(String key) async {
     await initTTS();
+    
+    // // Get current language
+    // final prefs = await SharedPreferences.getInstance();
+    // final String currentLanguage = prefs.getString('selectedLanguage') ?? 'en-US';
+    
+    // // Make sure TTS is using the correct language
+    // await _flutterTts.setLanguage(currentLanguage);
+    // await setTtsVoice(currentLanguage);
+    
+    // // Translate and speak the text
     final String text = key.tr; // Use GetX translation
     await _flutterTts.stop();
     await _flutterTts.speak(text);

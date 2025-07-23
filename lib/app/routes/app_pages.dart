@@ -1,3 +1,4 @@
+import 'package:beenai_sense/app/modules/static/views/permissions.dart';
 import 'package:get/get.dart';
 
 import '../modules/OCR/bindings/ocr_binding.dart';
@@ -50,6 +51,10 @@ class AppPages {
       name: _Paths.STATIC,
       page: () => const StaticView(),
       binding: StaticBinding(),
+    ),
+    GetPage(
+      name: _Paths.PERMISSIONS,
+      page: () => const PermissionOnboardingView(),
     ),
   ];
 }

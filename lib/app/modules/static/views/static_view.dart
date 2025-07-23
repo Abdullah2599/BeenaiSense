@@ -21,7 +21,7 @@ class _StaticViewState extends State<StaticView>
   void initState() {
     super.initState();
     _controller = AnimationController(
-      duration: const Duration(seconds: 1),
+      duration: const Duration(seconds: 2),
       vsync: this,
     );
 
@@ -35,25 +35,18 @@ class _StaticViewState extends State<StaticView>
       final prefs = await SharedPreferences.getInstance();
       final String? language = prefs.getString('selectedLanguage');
       bool isLanguageSelected = language != null;
+      // check if permissions are granted (do not request here)
+      PermissionStatus cameraStatus = await Permission.camera.status;
+      PermissionStatus microphoneStatus = await Permission.microphone.status;
+      bool isPermissionsGranted = cameraStatus.isGranted && microphoneStatus.isGranted;
 
-      PermissionStatus cameraStatus = await Permission.camera.request();
-      // Request microphone permission
-      PermissionStatus microphoneStatus = await Permission.microphone.request();
-      // Navigate to the appropriate screen after animation completes
-
-      if (cameraStatus.isGranted && microphoneStatus.isGranted && isLanguageSelected) {
+      if (isLanguageSelected && isPermissionsGranted) {
         Get.offNamed(Routes.BOTTOMNAV);
+      } else if (isLanguageSelected && !isPermissionsGranted) {
+        Get.offNamed(Routes.PERMISSIONS);
       } else {
         Get.offNamed(Routes.LANGUAGESELECTION);
-      } 
-
-      // Future.delayed(const Duration(seconds: 0), () {
-      //   if (isLanguageSelected) {
-      //     Get.offNamed(Routes.BOTTOMNAV);
-      //   } else {
-      //     Get.offNamed(Routes.LANGUAGESELECTION);
-      //   }
-      // });
+      }
     });
   }
 
@@ -67,7 +60,13 @@ class _StaticViewState extends State<StaticView>
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(toolbarHeight: 0, surfaceTintColor: Colors.transparent),
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        surfaceTintColor: Colors.transparent,
+        elevation: 0,
+        toolbarHeight: 0,
+        
+      ),
       body: Stack(
         children: [
           AnimatedBuilder(

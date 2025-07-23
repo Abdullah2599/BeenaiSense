@@ -1,4 +1,5 @@
 import 'package:beenai_sense/Utility/theme_helper.dart';
+import 'package:beenai_sense/app/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:get/get.dart';
@@ -38,16 +39,17 @@ class LanguageselectionController extends GetxController {
 
       // Speak both instructions with minimal delay
       await flutterTts.setLanguage('ur-PK');
+      await flutterTts.setVolume(1.0);
       await flutterTts.speak(
         'To select English, tap the top of the screen.\n'
-        'اردو کا انتخاب کرنے کے لیے، اسکرین کے نیچے والے حصے پر tap کریں۔\n\n'
+        'اردو کا انتخاب کرنے کے لیے، اسکرین کے نچلے حصے پر tap کریں۔\n\n'
         'To repeat instructions, tap the middle area.\n'
         'ہدایات دوبارہ سننے کے لیے، درمیانی حصے پر tap کریں۔',
       );
     } catch (e) {
       print("Error speaking instructions: $e");
       isSpeaking.value = false;
-    }
+    } 
   }
 
   Future<void> selectEnglish() async {
@@ -68,17 +70,17 @@ class LanguageselectionController extends GetxController {
       await flutterTts.setLanguage('en-US');
       themeController.updateThemeBasedOnLanguage('en-US');
       await flutterTts.speak(
-        'You have selected English. All permissions are granted. Starting the app now.',
+        'You have selected English. Starting the app now.',
       );
       // Wait for TTS to finish before navigating
-      await Future.delayed(const Duration(seconds: 5));
+      await Future.delayed(const Duration(seconds: 3));
 
       // Navigate to main screen
-      Get.offAllNamed('/bottomnav');
+      Get.offAllNamed(Routes.PERMISSIONS);
     } catch (e) {
       print("Error in English selection: $e");
       // Navigate anyway even if there's an error
-      Get.offAllNamed('/bottomnav');
+      Get.offAllNamed(Routes.PERMISSIONS);
     }
   }
 
@@ -99,18 +101,18 @@ class LanguageselectionController extends GetxController {
       await saveLanguagePreference('ur-PK');
       await flutterTts.setLanguage('ur-PK');
       await flutterTts.speak(
-        'آپ نے اردو کا انتخاب کیا ہے۔ تمام اجازتیں مل گئی ہیں۔ ایپ اب شروع ہو رہی ہے۔',
+        'آپ نے اردو کا انتخاب کیا ہے۔ ایپ اب شروع ہو رہی ہے۔',
       );
 
       // Wait for TTS to finish before navigating
-      await Future.delayed(const Duration(seconds: 5));
+      await Future.delayed(const Duration(seconds: 4));
 
       // Navigate to main screen
-      Get.offAllNamed('/bottomnav');
+      Get.offAllNamed(Routes.PERMISSIONS);
     } catch (e) {
       print("Error in Urdu selection: $e");
       // Navigate anyway even if there's an error
-      Get.offAllNamed('/bottomnav');
+      Get.offAllNamed(Routes.PERMISSIONS);
     }
   }
 

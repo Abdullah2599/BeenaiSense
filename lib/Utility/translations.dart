@@ -15,7 +15,7 @@ class AppTranslations extends Translations {
       'object_detection': 'Object Detection',
 
       // Home screen
-      'welcome_message': 'Welcome to Beenai Sense',
+      'welcome_permissions_intro': 'Welcome to Beenai Sense. To use the camera and microphone, please tap anywhere on the screen to grant access.',
       'tap_for_ocr': 'Tap left for text recognition',
       'tap_for_object': 'Tap right for object detection',
       'tap_for_help': 'Tap center for help',
@@ -39,7 +39,17 @@ class AppTranslations extends Translations {
       'settings': 'Settings',
       'beenai_sense': 'Beenai Sense',
 
+      // Permissions screen
+      'thank_you_permissions_granted': 'Thank you. Permissions granted. Loading the app.',
+      'permissions_permanently_denied': 'Permissions are permanently denied. Opening app settings.',
+      'permissions_denied': 'Permissions denied. Please try again.',
+      'beenai_sense_requires_camera_and_microphone_access': 'Beenai Sense requires camera and microphone access.',
 
+      // Instruction dialog
+      'How to use BeenAI Sense': 'How to use BeenAI Sense',
+      'Welcome to BeenAI Sense!\n\nThis app is designed to help you with:\n• Object Detection - Identifies objects around you\n• OCR - Reads text from images or camera\n• BeenAI Sense - Voice assistant for general information\n• Currency Reader - Identifies currency notes\n• Settings - Customize app preferences\n\nNavigation Instructions:\n• Swipe left/right to switch between sections\n• Single tap on this dialog to close it\n• Double tap on this dialog to replay instructions': 'Welcome to BeenAI Sense!\n\nThis app is designed to help you with:\n• Object Detection - Identifies objects around you\n• OCR - Reads text from images or camera\n• BeenAI Sense - Voice assistant for general information\n• Currency Reader - Identifies currency notes\n• Settings - Customize app preferences\n\nNavigation Instructions:\n• Swipe left/right to switch between sections\n• Single tap on this dialog to close it\n• Double tap on this dialog to replay instructions',
+      'Single tap to close - Double tap to repeat instructions': 'Single tap to close - Double tap to repeat instructions',
+      'Welcome to BeenAI Sense!\n\nThis app helps you with object detection, text reading, voice assistance, currency identification, and settings management.\n\nTo navigate, swipe left or right to move between different sections. \nSingle tap on this instruction to close it. \nDouble tap to replay these instructions.\nOn main screens, double tap to activate the current feature.\n\nThank you for using BeenAI Sense!': 'Welcome to BeenAI Sense!\n\nThis app helps you with object detection, text reading, voice assistance, currency identification, and settings management.\n\nTo navigate, swipe left or right to move between different sections. \nSingle tap on this instruction to close it. \nDouble tap to replay these instructions.\nOn main screens, double tap to activate the current feature.\n\nThank you for using BeenAI Sense!',
     },
     'ur_PK': {
       // General
@@ -53,7 +63,7 @@ class AppTranslations extends Translations {
       'object_detection': 'اشیاء کی شناخت',
 
       // Home screen
-      'welcome_message': 'بینائی سینس میں خوش آمدید',
+      'welcome_permissions_intro': 'بینائی سینس میں خوش آمدید۔ کیمرے اور مائکروفون استعمال کرنے کے لیے، براہ کرم اجازت دینے کے لیے اسکرین پر کہیں بھی ٹیپ کریں۔',
       'tap_for_ocr': 'متن کی شناخت کے لیے بائیں طرف ٹیپ کریں',
       'tap_for_object': 'اشیاء کی شناخت کے لیے دائیں طرف ٹیپ کریں',
       'tap_for_help': 'مدد کے لیے درمیان میں ٹیپ کریں',
@@ -77,6 +87,18 @@ class AppTranslations extends Translations {
       'currency_reader': 'کرنسی کی شناخت',
       'settings': 'آپشنز',
       'beenai_sense': 'بینائی سینس',
+
+      // Permissions screen
+      'thank_you_permissions_granted': 'شکریہ۔ اجازتیں حاصل ہوئی۔ ایپ لوڈ ہو رہا ہے۔',
+      'permissions_permanently_denied': 'اجازتیں مستقل طور پر مسترد کر دی گئی ہیں۔ سیٹنگز کو تبدیل کرنے کے لیے ایپ کی سیٹنگز میں جائیں۔',
+      'permissions_denied': 'اجازتیں رد کر دی گئی ہیں۔ براہ کرم دوبارہ کوشش کریں۔',
+      'beenai_sense_requires_camera_and_microphone_access': 'بینائی سینس کو کیمرے اور مائکروفون کی ضرورت ہے۔',
+      
+      // Instruction dialog
+      'How to use BeenAI Sense': 'بینائی سینس کو استعمال کرنے کا طریقہ',
+      'Welcome to BeenAI Sense!\n\nThis app is designed to help you with:\n• Object Detection - Identifies objects around you\n• OCR - Reads text from images or camera\n• BeenAI Sense - Voice assistant for general information\n• Currency Reader - Identifies currency notes\n• Settings - Customize app preferences\n\nNavigation Instructions:\n• Swipe left/right to switch between sections\n• Single tap on this dialog to close it\n• Double tap on this dialog to replay instructions': 'بینائی سینس میں خوش آمدید!\n\nیہ ایپ آپ کی مدد کرتی ہے:\n• اشیاء کی شناخت - آپ کے آس پاس کی چیزوں کی شناخت کرتا ہے\n• متن کی شناخت - تصاویر یا کیمرے سے متن پڑھتا ہے\n• بینائی سینس - عام معلومات کے لیے آواز سے مدد\n• کرنسی ریڈر - کرنسی نوٹوں کی شناخت\n• ترتیبات - ایپ کی ترجیحات کو تبدیل کریں\n\nنیویگیشن کے ہدایات:\n• سیکشنز کے درمیان سوئچ کرنے کے لیے بائیں/دائیں سوائپ کریں\n• اس ڈائیلاگ کو بند کرنے کے لیے ایک بار ٹیپ کریں\n• ہدایات کو دوبارہ سننے کے لیے ڈبل ٹیپ کریں',
+      'Single tap to close - Double tap to repeat instructions': 'بند کرنے کے لیے ایک بار ٹیپ - ہدایات دوبارہ سننے کے لیے ڈبل ٹیپ',
+      'Welcome to BeenAI Sense!\n\nThis app helps you with object detection, text reading, voice assistance, currency identification, and settings management.\n\nTo navigate, swipe left or right to move between different sections. \nSingle tap on this instruction to close it. \nDouble tap to replay these instructions.\n\nThank you for using BeenAI Sense!': 'بینائی سینس میں خوش آمدید!\n\nیہ ایپ آپ کی مدد کرتی ہے اشیاء کی شناخت، متن پڑھنے، آواز سے مدد، کرنسی کی شناخت، اور سیٹنگز کے انتظام میں۔\n\nنیویگیٹ کرنے کے لیے، مختلف سیکشنز کے درمیان جانے کے لیے بائیں یا دائیں سوائپ کریں۔\nاس ہدایت کو بند کرنے کے لیے ایک بار ٹیپ کریں۔\nان ہدایات کو دوبارہ سننے کے لیے ڈبل ٹیپ کریں۔\n\nبینائی سینس کا استعمال کرنے کا شکریہ!',
     },
   };
 }
