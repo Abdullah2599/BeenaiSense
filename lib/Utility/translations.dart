@@ -45,6 +45,13 @@ class AppTranslations extends Translations {
       'permissions_denied': 'Permissions denied. Please try again.',
       'beenai_sense_requires_camera_and_microphone_access': 'Beenai Sense requires camera and microphone access.',
 
+      // Chatbot screen
+      'chatbot_instructions': 'Point camera at objects to identify',
+      'tap_to_speak': 'Tap & Hold to Speak',
+      'listening': 'Listening…',
+      'speaking': 'Speaking…',
+
+
       // Instruction dialog
       'How to use BeenAI Sense': 'How to use BeenAI Sense',
       'Welcome to BeenAI Sense!\n\nThis app is designed to help you with:\n• Object Detection - Identifies objects around you\n• OCR - Reads text from images or camera\n• BeenAI Sense - Voice assistant for general information\n• Currency Reader - Identifies currency notes\n• Settings - Customize app preferences\n\nNavigation Instructions:\n• Swipe left/right to switch between sections\n• Single tap on this dialog to close it\n• Double tap on this dialog to replay instructions': 'Welcome to BeenAI Sense!\n\nThis app is designed to help you with:\n• Object Detection - Identifies objects around you\n• OCR - Reads text from images or camera\n• BeenAI Sense - Voice assistant for general information\n• Currency Reader - Identifies currency notes\n• Settings - Customize app preferences\n\nNavigation Instructions:\n• Swipe left/right to switch between sections\n• Single tap on this dialog to close it\n• Double tap on this dialog to replay instructions',
@@ -93,6 +100,14 @@ class AppTranslations extends Translations {
       'permissions_permanently_denied': 'اجازتیں مستقل طور پر مسترد کر دی گئی ہیں۔ سیٹنگز کو تبدیل کرنے کے لیے ایپ کی سیٹنگز میں جائیں۔',
       'permissions_denied': 'اجازتیں رد کر دی گئی ہیں۔ براہ کرم دوبارہ کوشش کریں۔',
       'beenai_sense_requires_camera_and_microphone_access': 'بینائی سینس کو کیمرے اور مائکروفون کی ضرورت ہے۔',
+
+      // Chatbot screen
+      'chatbot_instructions': 'چیزوں کو پہچاننے کے لیے کیمرہ ان پر رکھیں',
+      'tap_to_speak': 'بٹن دباکے بولیں',
+      'listening': 'سنا جا رہا ہے...',
+      'speaking': 'بولا جا رہا ہے...',
+
+      
       
       // Instruction dialog
       'How to use BeenAI Sense': 'بینائی سینس کو استعمال کرنے کا طریقہ',

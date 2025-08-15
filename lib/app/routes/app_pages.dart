@@ -1,4 +1,3 @@
-import 'package:beenai_sense/app/modules/static/views/permissions.dart';
 import 'package:get/get.dart';
 
 import '../modules/OCR/bindings/ocr_binding.dart';
@@ -7,11 +6,14 @@ import '../modules/bottomnav/bindings/bottomnav_binding.dart';
 import '../modules/bottomnav/views/bottomnav_view.dart';
 import '../modules/camerascreen/bindings/camerascreen_binding.dart';
 import '../modules/camerascreen/views/camerascreen_view.dart';
+import '../modules/chatbot/bindings/chatbot_binding.dart';
+import '../modules/chatbot/views/chatbot_view.dart';
 import '../modules/languageselection/bindings/languageselection_binding.dart';
 import '../modules/languageselection/views/languageselection_view.dart';
 import '../modules/objectdetection/bindings/objectdetection_binding.dart';
 import '../modules/objectdetection/views/objectdetection_view.dart';
 import '../modules/static/bindings/static_binding.dart';
+import '../modules/static/views/permissions.dart';
 import '../modules/static/views/static_view.dart';
 
 part 'app_routes.dart';
@@ -55,6 +57,11 @@ class AppPages {
     GetPage(
       name: _Paths.PERMISSIONS,
       page: () => const PermissionOnboardingView(),
+    ),
+    GetPage(
+      name: _Paths.CHATBOT,
+      page: () => const ChatbotView(),
+      binding: ChatbotBinding(),
     ),
   ];
 }

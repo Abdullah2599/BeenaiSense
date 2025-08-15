@@ -8,7 +8,8 @@ class ObjectdetectionView extends GetView<ObjectdetectionController> {
   const ObjectdetectionView({super.key});
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
+    return Container(
+      color: Colors.white,
       child: Scaffold(
         backgroundColor: Colors.black,
         body: Obx(() {
@@ -17,17 +18,17 @@ class ObjectdetectionView extends GetView<ObjectdetectionController> {
           if (!isCameraReady || camCtrl == null) {
             return const Center(child: CircularProgressIndicator(color: AppColors.primary));
           }
-
+      
           return LayoutBuilder(
             builder: (context, constraints) {
               final previewSize =
                   controller.cameraController.value?.value.previewSize;
               final scaleX = constraints.maxWidth / (previewSize?.height ?? 1);
               final scaleY = constraints.maxHeight / (previewSize?.width ?? 1);
-
+      
               return Stack(
                 children: [
-                  CameraPreview(camCtrl),
+                  Positioned.fill(child: CameraPreview(camCtrl)),
                   Obx(() {
                     return Stack(
                       children: controller.detections.map((detection) {
@@ -36,7 +37,7 @@ class ObjectdetectionView extends GetView<ObjectdetectionController> {
                         final top = box[1] * scaleY;
                         final width = (box[2] - box[0]) * scaleX;
                         final height = (box[3] - box[1]) * scaleY;
-
+      
                         return Positioned(
                           left: left,
                           top: top,

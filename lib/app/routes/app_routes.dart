@@ -10,6 +10,7 @@ abstract class Routes {
   static const LANGUAGESELECTION = _Paths.LANGUAGESELECTION;
   static const STATIC = _Paths.STATIC;
   static const PERMISSIONS = _Paths.PERMISSIONS;
+  static const CHATBOT = _Paths.CHATBOT;
 }
 
 abstract class _Paths {
@@ -21,4 +22,5 @@ abstract class _Paths {
   static const LANGUAGESELECTION = '/languageselection';
   static const STATIC = '/static';
   static const PERMISSIONS = '/permissions';
+  static const CHATBOT = '/chatbot';
 }

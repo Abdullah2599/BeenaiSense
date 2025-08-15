@@ -41,7 +41,7 @@ class ObjectdetectionController extends GetxController {
         orElse: () => cameras.first,
       );
 
-      cameraController.value = CameraController(camera, ResolutionPreset.high);
+      cameraController.value = CameraController(camera, ResolutionPreset.high,enableAudio: false);
       await cameraController.value!.initialize();
       cameraController.value!.startImageStream((image) {});
       isCameraReady.value = true;

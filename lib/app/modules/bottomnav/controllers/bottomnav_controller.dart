@@ -1,5 +1,6 @@
 import 'package:beenai_sense/Utility/tts_helper.dart';
 import 'package:beenai_sense/app/modules/OCR/controllers/ocr_controller.dart';
+import 'package:beenai_sense/app/modules/chatbot/controllers/chatbot_controller.dart';
 import 'package:beenai_sense/app/modules/objectdetection/controllers/objectdetection_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -27,6 +28,7 @@ class BottomnavController extends GetxController {
     // Initialize controllers
     Get.lazyPut<ObjectdetectionController>(() => ObjectdetectionController());
     Get.lazyPut(() => OcrController());
+    Get.lazyPut(() => ChatbotController());
 
     // Initialize TTS helper
     TTSHelper.initTTS();
