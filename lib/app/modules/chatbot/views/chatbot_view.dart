@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
-import 'package:flutter_vibrate/flutter_vibrate.dart';
 import '../controllers/chatbot_controller.dart';
 
 class ChatbotView extends GetView<ChatbotController> {
@@ -20,15 +19,17 @@ class ChatbotView extends GetView<ChatbotController> {
         onTapDown: (_) async {
           if (ctrl.isSpeaking.value) {
             ctrl.stopSpeaking();
-            if (await Vibrate.canVibrate) Vibrate.feedback(FeedbackType.success);
+           
           } else {
             await ctrl.startListening();
-            if (await Vibrate.canVibrate) Vibrate.feedback(FeedbackType.medium);
+           
           }
         },
         onTapUp: (_) async {
           if (ctrl.isListening.value) {
             await ctrl.stopListening();
+            // vibration without package
+            
           }
         },
         child: Stack(

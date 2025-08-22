@@ -17,8 +17,8 @@ class BottomnavController extends GetxController {
     'object_detection',
     'ocr',
     'beenai_sense',
-    'currency_reader',
-    'settings',
+    // 'currency_reader',
+    // 'settings',
   ];
 
   @override
@@ -236,10 +236,10 @@ class BottomnavController extends GetxController {
         return FontAwesomeIcons.newspaper;
       case 2:
         return FontAwesomeIcons.comments;
-      case 3:
-        return FontAwesomeIcons.moneyBill;
-      case 4:
-        return FontAwesomeIcons.gear;
+      // case 3:
+      //   return FontAwesomeIcons.moneyBill;
+      // case 4:
+      //   return FontAwesomeIcons.gear;
       default:
         return Icons.device_unknown;
     }

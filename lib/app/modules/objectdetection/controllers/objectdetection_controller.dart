@@ -74,8 +74,9 @@ class ObjectdetectionController extends GetxController {
   }
 
   Future<void> detectObject(File image) async {
-    final uri = Uri.parse(Api.baseUrl + Api.predict);
-    final request = http.MultipartRequest('POST', uri)
+    final baseUrl = await Api.getBaseUrl();
+    final url = Uri.parse("$baseUrl${Api.predict}");  
+    final request = http.MultipartRequest('POST', url)
       ..files.add(await http.MultipartFile.fromPath('image', image.path));
 
     try {

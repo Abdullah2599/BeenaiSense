@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:beenai_sense/app/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -12,8 +15,30 @@ class StaticView extends StatefulWidget {
   _StaticViewState createState() => _StaticViewState();
 }
 
+const gistUrl =
+    "https://gist.githubusercontent.com/Abdullah2599/49dd6ce5d5ce716d65ebd6a8a938e1d4/raw/bb902cb42f7628f9f9e10498619624532dc9aee3/gistfile1.json";
+
 class _StaticViewState extends State<StaticView>
     with SingleTickerProviderStateMixin {
+      
+  Future<void> _loadConfig() async {
+    try {
+      final response = await http
+          .get(Uri.parse(gistUrl))
+          .timeout(const Duration(seconds: 5));
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        if (data['baseUrl'] != null) {
+          final prefs = await SharedPreferences.getInstance();
+          await prefs.setString('baseUrl', data['baseUrl']);
+          print("✅ Base URL set to ${data['baseUrl']}");
+        }
+      }
+    } catch (e) {
+      print("⚠️ Could not fetch config from Gist: $e");
+    }
+  }
+
   late AnimationController _controller;
   late Animation<double> _animation;
 
@@ -31,6 +56,8 @@ class _StaticViewState extends State<StaticView>
     ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
 
     _controller.forward().then((_) async {
+      // 🔹 fetch baseUrl first
+      await _loadConfig();
       // Check if language is already selected
       final prefs = await SharedPreferences.getInstance();
       final String? language = prefs.getString('selectedLanguage');
@@ -38,7 +65,8 @@ class _StaticViewState extends State<StaticView>
       // check if permissions are granted (do not request here)
       PermissionStatus cameraStatus = await Permission.camera.status;
       PermissionStatus microphoneStatus = await Permission.microphone.status;
-      bool isPermissionsGranted = cameraStatus.isGranted && microphoneStatus.isGranted;
+      bool isPermissionsGranted =
+          cameraStatus.isGranted && microphoneStatus.isGranted;
 
       if (isLanguageSelected && isPermissionsGranted) {
         Get.offNamed(Routes.BOTTOMNAV);
@@ -65,7 +93,6 @@ class _StaticViewState extends State<StaticView>
         surfaceTintColor: Colors.transparent,
         elevation: 0,
         toolbarHeight: 0,
-        
       ),
       body: Stack(
         children: [

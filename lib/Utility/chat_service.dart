@@ -19,7 +19,7 @@ class ChatService {
   );
 
   /// Optional: If you have a Flask chatbot endpoint different from default
-  static Uri flaskEndpoint = Uri.parse('${Api.baseUrl}/chatbot');
+  static Uri flaskEndpoint = Uri.parse('${Api.getBaseUrl()}/chatbot');
   static const String providerGemini = 'gemini';
   static String geminiApiKey =
       'AIzaSyAkdGAsmJSkqXi4b4nP42NKiQkW7PbxTfk'; // Set your Gemini API key

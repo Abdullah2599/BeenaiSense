@@ -68,6 +68,7 @@ class BottomnavView extends GetView<BottomnavController> {
             alignment: Alignment.bottomCenter,
             child: Container(
               height: 160,
+              width: double.infinity,
               padding: EdgeInsets.only(
                 top: 10,
                 bottom: MediaQuery.of(context).padding.bottom + 6,
@@ -181,10 +182,10 @@ Widget _buildViewForIndex(int index) {
       return OcrView();
     case 2:
       return ChatbotView();
-    case 3:
-      return Placeholder(); // Color Identifier
-    case 4:
-      return Placeholder(); // Scene Describer
+    // case 3:
+    //   return Placeholder(); // Color Identifier
+    // case 4:
+    //   return Placeholder(); // Scene Describer
     default:
       return Center(child: Text("Invalid index"));
   }
