@@ -16,7 +16,7 @@ class StaticView extends StatefulWidget {
 }
 
 const gistUrl =
-    "https://gist.githubusercontent.com/Abdullah2599/49dd6ce5d5ce716d65ebd6a8a938e1d4/raw/bb902cb42f7628f9f9e10498619624532dc9aee3/gistfile1.json";
+    "https://gist.githubusercontent.com/Abdullah2599/49dd6ce5d5ce716d65ebd6a8a938e1d4/raw/gistfile1.json";
 
 class _StaticViewState extends State<StaticView>
     with SingleTickerProviderStateMixin {
