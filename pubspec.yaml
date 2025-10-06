@@ -6,7 +6,7 @@ publish_to: 'none'
 version: 1.0.0+1
 
 environment:
-  sdk: ^3.8.0
+  sdk: ^3.7.2
 
 
 dependencies:
@@ -28,6 +28,10 @@ dependencies:
   url_launcher: ^6.1.7
   device_apps: ^2.2.0
   lottie: ^3.3.1
+  tflite_flutter: ^0.11.0
+  connectivity_plus: ^7.0.0
+  internet_connection_checker_plus: ^2.9.0
+  image: ^4.5.4
 
 
 dev_dependencies:
@@ -42,3 +46,5 @@ flutter:
 
   assets:
     - assets/
+    - assets/yolo11n_object365_float32.tflite
+    - assets/labels.txt

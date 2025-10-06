@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:beenai_sense/Constants/API_key.dart';
+import 'package:beenai_sense/Utility/connectivity_service.dart';
+import 'package:beenai_sense/Utility/tflite_service.dart';
 import 'package:beenai_sense/Utility/tts_helper.dart';
 import 'package:camera/camera.dart';
 import 'package:get/get.dart';
@@ -13,6 +15,7 @@ class ObjectdetectionController extends GetxController {
   var detections = <Map<String, dynamic>>[].obs;
   var cameraController = Rx<CameraController?>(null);
   var isCameraReady = false.obs;
+  var isOnlineMode = true.obs; // Track current mode
   Timer? frameTimer;
   String lastSpoken = '';
   int lastSpokenTime = 0;
@@ -22,13 +25,14 @@ class ObjectdetectionController extends GetxController {
   void onInit() async {
     super.onInit();
     await loadLanguagePreference();
-    // await initializeCamera();
+    
+    // Initialize TFLite model on startup
+    await TFLiteDetector.initialize();
   }
 
   Future<void> loadLanguagePreference() async {
     final prefs = await SharedPreferences.getInstance();
     selectedLanguage.value = prefs.getString('selectedLanguage') ?? 'en-US';
-    // Initialize TTS with selected language
     await TTSHelper.initTTS();
   }
 
@@ -41,17 +45,20 @@ class ObjectdetectionController extends GetxController {
         orElse: () => cameras.first,
       );
 
-      cameraController.value = CameraController(camera, ResolutionPreset.high,enableAudio: false);
+      cameraController.value = CameraController(
+        camera, 
+        ResolutionPreset.high,
+        enableAudio: false
+      );
+      
       await cameraController.value!.initialize();
       cameraController.value!.startImageStream((image) {});
       isCameraReady.value = true;
+      
       frameTimer = Timer.periodic(
         const Duration(seconds: 2),
         (_) => captureAndDetect(),
       );
-      
-      // Speak instructions in the selected language
-      // await TTSHelper.speakTranslated('object_instructions');
     } catch (e) {
       Get.snackbar("Camera Error", "Failed to initialize camera");
     }
@@ -74,60 +81,122 @@ class ObjectdetectionController extends GetxController {
   }
 
   Future<void> detectObject(File image) async {
-    final baseUrl = await Api.getBaseUrl();
-    final url = Uri.parse("$baseUrl${Api.predict}");  
-    final request = http.MultipartRequest('POST', url)
-      ..files.add(await http.MultipartFile.fromPath('image', image.path));
-
     try {
-      final response = await request.send();
+      // Check internet connectivity
+      bool isConnected = await ConnectivityService.isConnected();
+      
+      List<Map<String, dynamic>> allDetections = [];
+      
+      if (isConnected) {
+        // Try online detection first
+        allDetections = await _detectOnline(image);
+        
+        // If online fails, fallback to offline
+        if (allDetections.isEmpty) {
+          print('⚠️ Online detection failed, switching to offline...');
+          allDetections = await _detectOffline(image);
+          isOnlineMode.value = false;
+        } else {
+          isOnlineMode.value = true;
+        }
+      } else {
+        // Use offline detection
+        print('📱 No internet, using offline detection');
+        allDetections = await _detectOffline(image);
+        isOnlineMode.value = false;
+      }
+
+      // Process detections
+      _processDetections(allDetections);
+      
+    } catch (e) {
+      print('Detection error: $e');
+      // On any error, try offline fallback
+      final offlineDetections = await _detectOffline(image);
+      _processDetections(offlineDetections);
+    }
+  }
+
+  // Online detection via API
+  Future<List<Map<String, dynamic>>> _detectOnline(File image) async {
+    try {
+      final baseUrl = await Api.getBaseUrl();
+      
+      // Check if server is reachable
+      bool serverReachable = await ConnectivityService.isServerReachable(baseUrl);
+      if (!serverReachable) {
+        return [];
+      }
+
+      final url = Uri.parse("$baseUrl${Api.predict}");
+      final request = http.MultipartRequest('POST', url)
+        ..files.add(await http.MultipartFile.fromPath('image', image.path));
+
+      // Set timeout for API call
+      final response = await request.send().timeout(
+        const Duration(seconds: 5),
+        onTimeout: () => throw TimeoutException('API timeout'),
+      );
+
       final responseData = await http.Response.fromStream(response);
       final data = json.decode(responseData.body);
 
       if (data['success'] == true) {
-        final allDetections = List<Map<String, dynamic>>.from(
-          data['detections'],
-        );
-        detections.value = allDetections
-            .where((d) => d['confidence'] >= 0.70)
-            .toList();
-
-        if (detections.isNotEmpty) {
-          final now = DateTime.now().millisecondsSinceEpoch;
-          final first = detections[0];
-          final label = first['label'];
-          final confidence = first['confidence'];
-
-          if (confidence >= 0.70 &&
-              (label != lastSpoken || now - lastSpokenTime > 4000)) {
-            
-            // Use localized speech based on selected language
-            if (selectedLanguage.value == 'ur-PK') {
-              // For Urdu, use the translated "Detected: " + object name
-              final detectedText = 'detected_object'.tr + getUrduTranslation(label);
-              await TTSHelper.speak(detectedText);
-            } else {
-              // For English
-              await TTSHelper.speak("I see ${label}");
-            }
-            
-            lastSpoken = label;
-            lastSpokenTime = now;
-          }
-        } else {
-          // No objects detected
-          // await TTSHelper.speakTranslated('no_object');
-        }
-      } else {
-        Get.snackbar("Error", data['error'] ?? 'Unknown error');
+        return List<Map<String, dynamic>>.from(data['detections']);
       }
+      
+      return [];
     } catch (e) {
-      Get.snackbar("Error", "Connection failed");
+      print('Online detection error: $e');
+      return [];
     }
   }
 
-  // Helper method to get Urdu translation for common objects
-  // In a real app, you might use an API or a more comprehensive translation system
+  // Offline detection via TFLite
+  Future<List<Map<String, dynamic>>> _detectOffline(File image) async {
+    try {
+      return await TFLiteDetector.detectObjects(image);
+    } catch (e) {
+      print('Offline detection error: $e');
+      return [];
+    }
+  }
+
+  // Process and announce detections
+  void _processDetections(List<Map<String, dynamic>> allDetections) {
+    // Filter by confidence
+    detections.value = allDetections
+        .where((d) => (d['confidence'] as double) >= 0.70)
+        .toList();
+
+    if (detections.isNotEmpty) {
+      final now = DateTime.now().millisecondsSinceEpoch;
+      final first = detections[0];
+      final label = first['label'] as String;
+      final confidence = first['confidence'] as double;
+
+      if (confidence >= 0.70 &&
+          (label != lastSpoken || now - lastSpokenTime > 4000)) {
+        
+        // Announce detection with mode indicator
+        String announcement = isOnlineMode.value 
+            ? "I see $label" 
+            : "I see $label";
+            
+        if (selectedLanguage.value == 'ur-PK') {
+          final detectedText = 'detected_object'.tr + 
+                               getUrduTranslation(label);
+          TTSHelper.speak(detectedText);
+        } else {
+          TTSHelper.speak(announcement);
+        }
+        
+        lastSpoken = label;
+        lastSpokenTime = now;
+      }
+    }
+  }
+
   String getUrduTranslation(String englishLabel) {
     final Map<String, String> translations = {
       'person': 'انسان',
@@ -151,6 +220,7 @@ class ObjectdetectionController extends GetxController {
   @override
   void onClose() {
     disposeCamera();
+    TFLiteDetector.dispose();
     super.onClose();
   }
 }
